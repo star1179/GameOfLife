@@ -7,7 +7,7 @@ class Cell(QWidget):
     def __init__(self):
         super().__init__()
         self.color = 'gray'
-        self.life = False
+        self.life = 0
         self.alive_round = 0
 
     def paintEvent(self, event):
@@ -32,6 +32,15 @@ class Cell(QWidget):
 
         self.update()
 
+    def checkDestiny(self):
+        if self.alive_round < 2 and self.life == 1:
+            self.changeState()
+        elif self.alive_round == 3 and self.life == 0:
+            self.changeState()
+        elif self.alive_round > 3 and self.life == 1:
+            self.changeState()
+        else:
+            pass
 
 class Table(QWidget):
     def __init__(self, width = 80, height = 40, random = False, duration = 0):
@@ -88,7 +97,7 @@ class Window(QWidget):
                 self.cell_list.append([tempCol,tempRow])
 
             if len(argv) == 3:
-                duration = argv[2]
+                self.duration = argv[2]
 
     def initUI(self):
         self.setWindowTitle("John Conway's Game Of Life")
