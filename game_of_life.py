@@ -52,6 +52,34 @@ class Window(QWidget):
         super().__init__()
         self.initUI()
 
+    def parseArgv(self):
+        argv = sys.argv
+        if len(argv) == 1:
+            self.random = True
+
+        elif len(argv) > 1:
+            self.cell_list = []
+            self.duration = 0
+
+            fd = open("state.txt", "r")
+            lines = fd.readlines()
+            lines = list(map(lambda s: s.strip(), lines))
+
+            numOfTable = lines[0].split(" ")
+            width = int(numOfTable[0])
+            height = int(numOfTable[1])
+
+            numOfCell = int(lines[1])
+            lines = lines[2:]
+            for line in lines:
+                temp = line.split(" ")
+                tempCol = int(temp[0])
+                tempRow = int(temp[1])
+                self.cell_list.append([tempCol,tempRow])
+
+            if len(argv) == 3:
+                duration = argv[2]
+
     def initUI(self):
         self.setWindowTitle("John Conway's Game Of Life")
         self.control_button = QPushButton("Start")
