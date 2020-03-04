@@ -66,6 +66,38 @@ class Table(QWidget):
                     cell = item.widget()
                     cell.changeState()
 
+    def initTimer(self):
+        self.timer_run = QTimer()
+        self.timer_run.setInterval(1000)  # 1 sec
+        self.timer_run.timeout.connect(self.timeOutEvent)
+        self.timer_run.start()
+
+    def timeOutEvent(self):
+        for idx in range(self.layout.count()):
+            item = self.layout.itemAt(idx)
+            pos = self.layout.getItemPosition(idx)
+            x, y = pos[0], pos[1]
+            target_widget = item.widget()
+            self.getNumOfAlive(x, y, target_widget)
+
+        for idx in range(self.layout.count()):
+            item = self.layout.itemAt(idx)
+            cell = item.widget()
+            cell.checkDestiny()
+
+    def getNumOfAlive(self, x, y, target):
+        sum = 0
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if i == 0 and j == 0:
+                    continue
+                try:
+                    sum += self.layout.itemAtPosition(x + i, y + j).widget().life
+                except AttributeError:
+                    pass
+
+        target.alive_round = sum
+
 class Window(QWidget):
     def __init__(self):
         super().__init__()
