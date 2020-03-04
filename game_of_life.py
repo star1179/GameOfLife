@@ -77,10 +77,15 @@ class Table(QWidget):
                     cell.changeState()
 
     def initTimer(self):
-        self.timer_run = QTimer()
-        self.timer_run.setInterval(1000)  # 1 sec
-        self.timer_run.timeout.connect(self.timeOutEvent)
-        self.timer_run.start()
+        if self.main.control_button.text() == "Start":
+            self.timer_run = QTimer()
+            self.timer_run.setInterval(1000)  # 1 sec
+            self.timer_run.timeout.connect(self.timeOutEvent)
+            self.timer_run.start()
+            self.main.control_button.setText("Stop")
+        else:
+            self.timer_run.stop()
+            self.main.contol_button.setText("Start")
 
     def timeOutEvent(self):
         if self.generation == self.duration and self.duration != 0:
