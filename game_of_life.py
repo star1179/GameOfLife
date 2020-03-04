@@ -33,5 +33,19 @@ class Cell(QWidget):
         self.update()
 
 
+class Table(QWidget):
+    def __init__(self, width = 40, height = 80, random = False, duration = 0):
+        super().__init__()
+        self.width = width
+        self.height = height
+        self.layout = QGridLayout()
+        self.setLayout(self.layout)
+
+    def initTable(self):
+        for x in range(len(self.width)):
+            for y in range(len(self.height)):
+                cell = Cell()
+                self.layout.addWidget(cell, x, y)
+
 if __name__ == "__main__":
     pass
