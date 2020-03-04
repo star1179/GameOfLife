@@ -41,11 +41,21 @@ class Table(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
 
-    def initTable(self):
-        for x in range(self.table_width):
-            for y in range(self.table_height):
+    def initTable(self, randomState):
+        for y in range(self.table_height):
+            for x in range(self.table_width):
                 cell = Cell()
-                self.layout.addWidget(cell, x, y)
+                self.layout.addWidget(cell, y, x)
+                if [y+1,x+1] in self.cell_list and randomState == False:
+                    cell.changeState()
+
+        if randomState == True:
+            for idx in range(self.layout.count()):
+                destiny = random.randint(0,10)
+                if destiny == 1:
+                    item = self.layout.itemAt(idx)
+                    cell = item.widget()
+                    cell.changeState()
 
 class Window(QWidget):
     def __init__(self):
