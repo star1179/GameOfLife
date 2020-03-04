@@ -43,11 +43,21 @@ class Cell(QWidget):
             pass
 
 class Table(QWidget):
-    def __init__(self, width = 80, height = 40, random = False, duration = 0):
+    def __init__(self, main=None, width = 80, height = 40, random = False, duration = 0, cell_list = []):
         super().__init__()
+        self.main = main
+        self.generation = 0
+        self.duration = 10
         self.table_width = width
         self.table_height = height
+        self.cell_list = cell_list
+        self.initUI()
+        self.initTable(randomState=random)
+        self.main.control_button.clicked.connect(self.initTimer)
+
+    def initUI(self):
         self.layout = QGridLayout()
+        self.layout.setSpacing(0)
         self.setLayout(self.layout)
 
     def initTable(self, randomState):
@@ -73,6 +83,10 @@ class Table(QWidget):
         self.timer_run.start()
 
     def timeOutEvent(self):
+        if self.generation == self.duration and self.duration != 0:
+            self.timer_run.stop()
+            return
+
         for idx in range(self.layout.count()):
             item = self.layout.itemAt(idx)
             pos = self.layout.getItemPosition(idx)
@@ -84,6 +98,9 @@ class Table(QWidget):
             item = self.layout.itemAt(idx)
             cell = item.widget()
             cell.checkDestiny()
+
+        self.generation += 1
+        self.main.state_button.setText("generation : {}".format(self.generation))
 
     def getNumOfAlive(self, x, y, target):
         sum = 0
@@ -107,6 +124,8 @@ class Window(QWidget):
         argv = sys.argv
         if len(argv) == 1:
             self.random = True
+            self.table_width = 80
+            self.table_height = 40
 
         elif len(argv) > 1:
             self.cell_list = []
@@ -137,7 +156,7 @@ class Window(QWidget):
         self.state_button = QPushButton("generation : 0")
         self.state_button.setFlat(True)
 
-        table = Table()
+        table = Table(main = self, width = self.table_width, height = self.table_height, random = self.random, duration = self.duration, cell_list = self.cell_list)
 
         self.setGeometry(100, 100, table.table_width*10, table.table_height*10)
         self.layout_bottom = QHBoxLayout()
