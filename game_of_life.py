@@ -34,7 +34,7 @@ class Cell(QWidget):
 
 
 class Table(QWidget):
-    def __init__(self, width = 40, height = 80, random = False, duration = 0):
+    def __init__(self, width = 80, height = 40, random = False, duration = 0):
         super().__init__()
         self.table_width = width
         self.table_height = height
@@ -53,28 +53,21 @@ class Window(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(100,100,500,500)
-        self.title_label = QLabel("John Conway's Game Of Life")
-        self.state_label = QLabel("Initial state : ")
-        self.gene_label = QLabel("Generation : 0")
-        self.start_button = QPushButton("Start")
-        self.stop_button = QPushButton("Stop")
+        self.setWindowTitle("John Conway's Game Of Life")
+        self.control_button = QPushButton("Start")
+        self.state_button = QPushButton("generation : 0")
+        self.state_button.setFlat(True)
 
         table = Table()
 
-        self.layout_state = QHBoxLayout()
-        self.layout_state.addWidget(self.state_label)
-        self.layout_state.addWidget(self.gene_label)
-
-        self.layout_button = QHBoxLayout()
-        self.layout_button.addWidget(self.start_button)
-        self.layout_button.addWidget(self.stop_button)
+        self.setGeometry(100, 100, table.table_width*10, table.table_height*10)
+        self.layout_bottom = QHBoxLayout()
+        self.layout_bottom.addWidget(self.control_button)
+        self.layout_bottom.addWidget(self.state_button)
 
         self.layout_all = QVBoxLayout()
-        self.layout_all.addWidget(self.title_label)
-        self.layout_all.addLayout(self.layout_state)
         self.layout_all.addWidget(table)
-        self.layout_all.addLayout(self.layout_button)
+        self.layout_all.addLayout(self.layout_bottom)
 
         self.setLayout(self.layout_all)
         self.show()
