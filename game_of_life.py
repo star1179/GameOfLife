@@ -1,23 +1,37 @@
 import sys
+import PyQt5.QtWidgets import *
+import PyQt5.QtGui import *
+import PyQt5.QtCore import *
 
-class App():
+class Cell(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.color = 'gray'
+        self.life = False
+        self.alive_round = 0
 
-    def __init__(self, ag):
-        self.ag = ag
+    def paintEvent(self, event):
+        qp = QPainter()
+        qp.begin(self)
+        self.drawCell(qp)
+        qp.end()
 
-    def initState(self):
-        if len(self.ag) > 1:
-            try:
-                fd = open(self.ag[1],"r")
+    def drawCell(self, qp):
+        pen = QColor(0, 0, 0)
+        qp.setPen(pen)
+        qp.setBrush(QColor(self.color))
+        qp.drawRect(0, 0, 5, 5)
 
-            except FileNotFoundError:
-                pass
+    def changeState(self):
+        if self.life == False:
+            self.life = True
+            self.color = 'yellow'
+        else:
+            self.life = False
+            self.color = 'gray'
 
-            else:
-                lines = fd.readlines()
-                self.width = lines[0]
-                self.height = lines[1]
+        self.update()
 
 
 if __name__ == "__main__":
-    ag = sys.argv
+    pass
