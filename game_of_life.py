@@ -1,8 +1,8 @@
 import sys
 import random
-import PyQt5.QtWidgets import *
-import PyQt5.QtGui import *
-import PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 class Cell(QWidget):
     def __init__(self):
@@ -86,7 +86,7 @@ class Table(QWidget):
             self.main.control_button.setText("Stop")
         else:
             self.timer_run.stop()
-            self.main.contol_button.setText("Start")
+            self.main.control_button.setText("Start")
 
     def timeOutEvent(self):
         if self.generation == self.duration and self.duration != 0:
@@ -133,10 +133,10 @@ class Table(QWidget):
                 if self.layout.itemAtPosition(i,j).widget().life == 1:
                     alive_num += 1
                     alive_list[0].append(i+1)
-                    alive_list[1].ap[end(j+1)
-        fd.write("{}\n".format(str(alive_num))
+                    alive_list[1].append(j+1)
+        fd.write("{}\n".format(str(alive_num)))
         for idx in range(len(alive_list[0])):
-            fd.write("{} {}\n".format(str(alive_list[0][idx]), str(alive_list[1][idx]))
+            fd.write("{} {}\n".format(str(alive_list[0][idx]), str(alive_list[1][idx])))
         fd.close()
 
 class Window(QWidget):
@@ -166,8 +166,8 @@ class Window(QWidget):
             lines = list(map(lambda s: s.strip(), lines))
 
             numOfTable = lines[0].split(" ")
-            width = int(numOfTable[0])
-            height = int(numOfTable[1])
+            self.table_height = int(numOfTable[0])
+            self.table_width = int(numOfTable[1])
 
             numOfCell = int(lines[1])
             lines = lines[2:]
