@@ -20,7 +20,7 @@ class Cell(QWidget):
         pen = QColor(0, 0, 0)
         qp.setPen(pen)
         qp.setBrush(QColor(self.color))
-        qp.drawRect(0, 0, 5, 5)
+        qp.drawRect(0, 0, 10, 10)
 
     def changeState(self):
         if self.life == False:
@@ -90,6 +90,8 @@ class Table(QWidget):
     def timeOutEvent(self):
         if self.generation == self.duration and self.duration != 0:
             self.timer_run.stop()
+            self.dumpState()
+            self.main.control_button.setText("End")
             return
 
         for idx in range(self.layout.count()):
@@ -120,13 +122,34 @@ class Table(QWidget):
 
         target.alive_round = sum
 
+    def dumpState(self):
+        fd = open(sys.argv[1], "w")
+        fd.write("{} {}\n".format(str(self.table_height), str(self.table_width)))
+        alive_num = 0
+        alive_list = [[], []]
+        for i in range(self.table_height):
+            for j in range(self.table_width):
+                if self.layout.itemAtPosition(i,j).widget().life == 1:
+                    alive_num += 1
+                    alive_list[0].append(i+1)
+                    alive_list[1].ap[end(j+1)
+        fd.write("{}\n".format(str(alive_num))
+        for idx in range(len(alive_list[0])):
+            fd.write("{} {}\n".format(str(alive_list[0][idx]), str(alive_list[1][idx]))
+        fd.close()
+
 class Window(QWidget):
     def __init__(self):
         super().__init__()
+        self.parseArgv()
         self.initUI()
 
     def parseArgv(self):
         argv = sys.argv
+        self.cell_list = []
+        self.duration = 0
+        self.random = False
+
         if len(argv) == 1:
             self.random = True
             self.table_width = 80
@@ -136,8 +159,9 @@ class Window(QWidget):
             self.cell_list = []
             self.duration = 0
 
-            fd = open("state.txt", "r")
+            fd = open(sys.argv[1], "r")
             lines = fd.readlines()
+            fd.close()
             lines = list(map(lambda s: s.strip(), lines))
 
             numOfTable = lines[0].split(" ")
