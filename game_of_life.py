@@ -1,4 +1,5 @@
 import sys
+import random
 import PyQt5.QtWidgets import *
 import PyQt5.QtGui import *
 import PyQt5.QtCore import *
@@ -47,7 +48,7 @@ class Table(QWidget):
         super().__init__()
         self.main = main
         self.generation = 0
-        self.duration = 10
+        self.duration = int(duration)
         self.table_width = width
         self.table_height = height
         self.cell_list = cell_list
@@ -159,7 +160,7 @@ class Window(QWidget):
             self.cell_list = []
             self.duration = 0
 
-            fd = open(sys.argv[1], "r")
+            fd = open(argv[1], "r")
             lines = fd.readlines()
             fd.close()
             lines = list(map(lambda s: s.strip(), lines))
@@ -200,4 +201,6 @@ class Window(QWidget):
         self.show()
 
 if __name__ == "__main__":
-    pass
+    app = QApplication(sys.argv)
+    ex = Window()
+    sys.exit(app.exec_())
