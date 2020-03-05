@@ -1,6 +1,10 @@
 # Game of life
 
-John Conway's game for streami.
+Visualizing program for John Conway's game of life.
+It's homework for streami.
+
+![pg image](https://user-images.githubusercontent.com/37567281/75950639-13c29200-5eed-11ea-88fb-42d485848583.JPG)
+
 Thank you for opportunity.
 
 # Installation
